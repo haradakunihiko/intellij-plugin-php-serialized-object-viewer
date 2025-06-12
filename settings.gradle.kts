@@ -1,0 +1,1 @@
+rootProject.name = "intellij-plugin-php-serialized-object-viewer"
