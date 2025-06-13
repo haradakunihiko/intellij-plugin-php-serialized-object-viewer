@@ -85,6 +85,6 @@ jobs:
           echo ""
           echo "🔗 Links:"
           echo "- GitHub Release: https://github.com/${{ github.repository }}/releases/tag/$TAG"
-          echo "- JetBrains Marketplace: https://plugins.jetbrains.com/plugin/io.github.haradakunihiko.intellij-plugin-php-serialized-object-viewer"
+          echo "- JetBrains Marketplace: https://plugins.jetbrains.com/plugin/27623-php-serialized-object-viewer"
           echo ""
           echo "✅ The release process is now complete!"
