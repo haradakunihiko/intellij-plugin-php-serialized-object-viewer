@@ -10,19 +10,21 @@ import javax.swing.border.TitledBorder
 class ClipboardMonitorPanel : JPanel(BorderLayout()) {
 
     private val clipboardContent: JTextArea
+    private val statusLabel: JLabel
     private val monitorCheckBox: JCheckBox
     private val clipboardTimer: Timer
     private var lastClipboardContent = ""
 
     init {
         val components = initializeUI()
-        clipboardContent = components.first
-        monitorCheckBox = components.second
+        statusLabel = components.first
+        clipboardContent = components.second
+        monitorCheckBox = components.third
         clipboardTimer = createClipboardTimer()
         startClipboardMonitoring()
     }
 
-    private fun initializeUI(): Pair<JTextArea, JCheckBox> {
+    private fun initializeUI(): Triple<JLabel, JTextArea, JCheckBox> {
         preferredSize = Dimension(400, 300)
 
         val mainPanel = JPanel().apply {
@@ -47,6 +49,15 @@ class ClipboardMonitorPanel : JPanel(BorderLayout()) {
         }
         mainPanel.add(checkBoxPanel)
 
+        // Status label
+        val statusLbl = JLabel("Monitoring clipboard...")
+        val statusPanel = JPanel(BorderLayout()).apply {
+            add(statusLbl, BorderLayout.WEST)
+            border = BorderFactory.createEmptyBorder(5, 5, 5, 5)
+            maximumSize = Dimension(Int.MAX_VALUE, 30)
+        }
+        mainPanel.add(statusPanel)
+
         // Clipboard content display area
         val clipboardTextArea = JTextArea(15, 30).apply {
             isEditable = false
@@ -62,7 +73,7 @@ class ClipboardMonitorPanel : JPanel(BorderLayout()) {
 
         add(mainPanel, BorderLayout.CENTER)
 
-        return Pair(clipboardTextArea, checkBox)
+        return Triple(statusLbl, clipboardTextArea, checkBox)
     }
 
     private fun createClipboardTimer(): Timer {
@@ -71,10 +82,21 @@ class ClipboardMonitorPanel : JPanel(BorderLayout()) {
 
     private fun startClipboardMonitoring() {
         clipboardTimer.start()
+        statusLabel.apply {
+            text = "Monitoring clipboard..."
+            foreground = Color.BLACK
+        }
     }
 
     private fun stopClipboardMonitoring() {
         clipboardTimer.stop()
+        statusLabel.apply {
+            text = "Monitoring stopped"
+            foreground = Color.GRAY
+        }
+        // Clear clipboard content when monitoring is stopped
+        clipboardContent.text = ""
+        lastClipboardContent = ""
     }
 
     private fun checkClipboard() {
@@ -96,7 +118,10 @@ class ClipboardMonitorPanel : JPanel(BorderLayout()) {
                     }
                 }
             } catch (ex: Exception) {
-                // Handle exceptions silently
+                statusLabel.apply {
+                    text = "Error: ${ex.message}"
+                    foreground = Color.RED
+                }
             }
         }
     }
@@ -108,6 +133,10 @@ class ClipboardMonitorPanel : JPanel(BorderLayout()) {
         // Update only if changed from last time
         if (processedContent != lastClipboardContent) {
             if (processedContent != content) {
+                statusLabel.apply {
+                    text = "PHP serialized data detected and converted (${getCurrentTime()})"
+                    foreground = Color.GREEN
+                }
                 clipboardContent.apply {
                     text = processedContent
                     caretPosition = 0
