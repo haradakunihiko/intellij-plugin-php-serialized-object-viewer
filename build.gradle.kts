@@ -4,6 +4,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.1.0"
     id("org.jetbrains.intellij.platform") version "2.5.0"
+    id("jacoco")
 }
 
 group = property("projectGroup").toString()
@@ -43,6 +44,18 @@ intellijPlatform {
         changeNotes = """
       Initial version
     """.trimIndent()
+    }
+    
+    publishing {
+        token = providers.gradleProperty("intellijPlatformPublishingToken")
+        // Optional: specify release channels
+        // channels = listOf("default") // or "beta", "alpha", etc.
+    }
+    
+    pluginVerification {
+        ides {
+            recommended()
+        }
     }
 }
 

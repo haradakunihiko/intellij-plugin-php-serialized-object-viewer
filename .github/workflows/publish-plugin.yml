@@ -1,0 +1,90 @@
+name: Publish Plugin to JetBrains Marketplace
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
+          
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION=${TAG#v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Publishing release: $TAG (version: $VERSION)"
+          
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        
+      - name: Verify version in gradle.properties
+        run: |
+          EXPECTED_VERSION="${{ steps.version.outputs.version }}"
+          ACTUAL_VERSION=$(grep 'projectVersion=' gradle.properties | sed 's/projectVersion=//')
+          echo "Expected version: $EXPECTED_VERSION"
+          echo "Actual version in gradle.properties: $ACTUAL_VERSION"
+          
+          if [ "$ACTUAL_VERSION" != "$EXPECTED_VERSION" ]; then
+            echo "❌ Version mismatch! Expected $EXPECTED_VERSION but found $ACTUAL_VERSION"
+            echo "This might indicate that the release was created from the wrong commit."
+            exit 1
+          fi
+          echo "✅ Version verified: $ACTUAL_VERSION"
+          
+      - name: Run tests
+        run: |
+          echo "Running tests before publishing..."
+          ./gradlew test
+          echo "✅ All tests passed"
+          
+      - name: Verify plugin
+        run: |
+          echo "Verifying plugin before publishing..."
+          ./gradlew verifyPlugin
+          echo "✅ Plugin verification passed"
+            
+      - name: Publish to JetBrains Marketplace
+        env:
+          ORG_GRADLE_PROJECT_intellijPlatformPublishingToken: ${{ secrets.INTELLIJ_PLATFORM_PUBLISHING_TOKEN }}
+        run: |
+          echo "Publishing to JetBrains Marketplace..."
+          ./gradlew publishPlugin
+          echo "✅ Published to JetBrains Marketplace successfully"
+          
+      - name: Publish Summary
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          VERSION="${{ steps.version.outputs.version }}"
+          
+          echo "🎉 Plugin published to JetBrains Marketplace successfully!"
+          echo ""
+          echo "📋 What was completed:"
+          echo "✅ Tests passed"
+          echo "✅ Plugin verification passed"
+          echo "✅ Plugin published to JetBrains Marketplace"
+          echo ""
+          echo "🔗 Links:"
+          echo "- GitHub Release: https://github.com/${{ github.repository }}/releases/tag/$TAG"
+          echo "- JetBrains Marketplace: https://plugins.jetbrains.com/plugin/io.github.haradakunihiko.intellij-plugin-php-serialized-object-viewer"
+          echo ""
+          echo "✅ The release process is now complete!"

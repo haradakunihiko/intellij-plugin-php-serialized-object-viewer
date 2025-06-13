@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java-version: [17, 21]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+    
+    - name: Cache Gradle packages
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Run tests
+      run: ./gradlew test
+    
+    - name: Verify plugin
+      run: ./gradlew verifyPlugin
+    
+    - name: Generate test report
+      run: ./gradlew jacocoTestReport
+      
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-${{ matrix.java-version }}
+        path: build/reports/tests/
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+    
+    - name: Cache Gradle packages
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Build plugin
+      run: ./gradlew buildPlugin
+    
+    - name: Upload plugin artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: plugin-artifacts
+        path: build/distributions/
