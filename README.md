@@ -4,6 +4,11 @@ A plugin that monitors clipboard and converts PHP serialized strings to JSON for
 
 **Plugin Page**: https://plugins.jetbrains.com/plugin/27623-php-serialized-object-viewer
 
+
+<img height="200px" alt="PHP Serialized Object Viewer Screenshot 1" src="docs/images/screenshot1.png" />
+<img height="200px" alt="PHP Serialized Object Viewer Screenshot 2" src="docs/images/screenshot2.png" />
+
+
 - **Manual monitoring control**: Enable/disable clipboard monitoring with a checkbox
 - **Clipboard monitoring**: Monitor clipboard content every 1 second when enabled
 - **Automatic detection & conversion**: Automatically convert to JSON format when PHP serialized data is detected
@@ -24,9 +29,6 @@ a:2:{s:4:"name";s:4:"John";s:3:"age";i:30;}
 }
 ```
 
-
-<img height="200px" alt="PHP Serialized Object Viewer Screenshot 1" src="docs/images/screenshot1.png" />
-<img height="200px" alt="PHP Serialized Object Viewer Screenshot 2" src="docs/images/screenshot2.png" />
 
 ## Supported PHP Serialization Formats
 
