@@ -10,30 +10,42 @@ import javax.swing.border.TitledBorder
 class ClipboardMonitorPanel : JPanel(BorderLayout()) {
 
     private val clipboardContent: JTextArea
-    private val statusLabel: JLabel
+    private val monitorCheckBox: JCheckBox
     private val clipboardTimer: Timer
     private var lastClipboardContent = ""
 
     init {
         val components = initializeUI()
-        statusLabel = components.first
-        clipboardContent = components.second
+        clipboardContent = components.first
+        monitorCheckBox = components.second
         clipboardTimer = createClipboardTimer()
         startClipboardMonitoring()
     }
 
-    private fun initializeUI(): Pair<JLabel, JTextArea> {
+    private fun initializeUI(): Pair<JTextArea, JCheckBox> {
         preferredSize = Dimension(400, 300)
 
         val mainPanel = JPanel().apply {
             layout = BoxLayout(this, BoxLayout.Y_AXIS)
         }
 
-        // Status label
-        val statusLbl = JLabel("Monitoring clipboard...").apply {
-            border = BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        // Control panel with checkbox
+        val checkBox = JCheckBox("Monitor Clipboard", true).apply {
+            addActionListener { e ->
+                val checkbox = e.source as JCheckBox
+                if (checkbox.isSelected) {
+                    startClipboardMonitoring()
+                } else {
+                    stopClipboardMonitoring()
+                }
+            }
         }
-        mainPanel.add(statusLbl)
+        val checkBoxPanel = JPanel(BorderLayout()).apply {
+            add(checkBox, BorderLayout.WEST)
+            border = BorderFactory.createEmptyBorder(5, 5, 5, 5)
+            maximumSize = Dimension(Int.MAX_VALUE, 40)
+        }
+        mainPanel.add(checkBoxPanel)
 
         // Clipboard content display area
         val clipboardTextArea = JTextArea(15, 30).apply {
@@ -50,7 +62,7 @@ class ClipboardMonitorPanel : JPanel(BorderLayout()) {
 
         add(mainPanel, BorderLayout.CENTER)
 
-        return Pair(statusLbl, clipboardTextArea)
+        return Pair(clipboardTextArea, checkBox)
     }
 
     private fun createClipboardTimer(): Timer {
@@ -61,7 +73,16 @@ class ClipboardMonitorPanel : JPanel(BorderLayout()) {
         clipboardTimer.start()
     }
 
+    private fun stopClipboardMonitoring() {
+        clipboardTimer.stop()
+    }
+
     private fun checkClipboard() {
+        // Skip clipboard check if monitoring is disabled
+        if (!monitorCheckBox.isSelected) {
+            return
+        }
+        
         SwingUtilities.invokeLater {
             try {
                 val manager = CopyPasteManager.getInstance()
@@ -73,17 +94,9 @@ class ClipboardMonitorPanel : JPanel(BorderLayout()) {
                     if (currentContent != lastClipboardContent) {
                         updateClipboardDisplay(currentContent)
                     }
-                } else {
-                    statusLabel.apply {
-                        text = "No text data in clipboard"
-                        foreground = Color.GRAY
-                    }
                 }
             } catch (ex: Exception) {
-                statusLabel.apply {
-                    text = "Error: ${ex.message}"
-                    foreground = Color.RED
-                }
+                // Handle exceptions silently
             }
         }
     }
@@ -95,10 +108,6 @@ class ClipboardMonitorPanel : JPanel(BorderLayout()) {
         // Update only if changed from last time
         if (processedContent != lastClipboardContent) {
             if (processedContent != content) {
-                statusLabel.apply {
-                    text = "PHP serialized data detected and converted (${getCurrentTime()})"
-                    foreground = Color.GREEN
-                }
                 clipboardContent.apply {
                     text = processedContent
                     caretPosition = 0

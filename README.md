@@ -4,10 +4,8 @@ A plugin that monitors clipboard and converts PHP serialized strings to JSON for
 
 **Plugin Page**: https://plugins.jetbrains.com/plugin/27623-php-serialized-object-viewer
 
-
-## Features
-
-- **Clipboard monitoring**: Monitor clipboard content every 1 second
+- **Manual monitoring control**: Enable/disable clipboard monitoring with a checkbox
+- **Clipboard monitoring**: Monitor clipboard content every 1 second when enabled
 - **Automatic detection & conversion**: Automatically convert to JSON format when PHP serialized data is detected
 - **Tool window display**: Display conversion results in a dedicated tool window
 
@@ -29,7 +27,6 @@ a:2:{s:4:"name";s:4:"John";s:3:"age";i:30;}
 
 <img height="200px" alt="PHP Serialized Object Viewer Screenshot 1" src="docs/images/screenshot1.png" />
 <img height="200px" alt="PHP Serialized Object Viewer Screenshot 2" src="docs/images/screenshot2.png" />
-<img height="200px" alt="PHP Serialized Object Viewer Screenshot 2" src="docs/images/screenshot3.png" />
 
 ## Supported PHP Serialization Formats
 
@@ -67,13 +64,17 @@ For detailed information about supported PHP serialization formats, see the conv
    - `View` → `Tool Windows` → `PHP Serialized Object Viewer`
    - Or click `PHP Serialized Object Viewer` from the tool window bar on the right
 
-2. **Copy PHP serialized data**:
+2. **Enable monitoring**:
+   - Check the "Monitor Clipboard" checkbox to start monitoring
+   - Uncheck to stop monitoring and save system resources
+
+3. **Copy PHP serialized data**:
    - Copy PHP serialized data from DataGrip cells
    - Or copy PHP serialized data to clipboard from any source
 
-3. **Check automatic conversion**:
+4. **Check automatic conversion**:
    - Check automatically converted JSON results in the tool window
-   - Check conversion success/failure in status messages
+   - Only works when monitoring is enabled
 
 
 ## Supported Versions
