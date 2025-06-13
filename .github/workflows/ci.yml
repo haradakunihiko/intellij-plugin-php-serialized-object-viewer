@@ -44,6 +44,18 @@ jobs:
     - name: Generate test report
       run: ./gradlew jacocoTestReport
       
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./build/reports/jacoco/test/jacocoTestReport.xml
+
+    - name: Upload test results to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/test-results-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+      
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()

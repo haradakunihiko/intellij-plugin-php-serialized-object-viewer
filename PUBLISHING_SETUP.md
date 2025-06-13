@@ -66,11 +66,23 @@
    - **Value**: GitHubのPersonal Access Token (repo権限必要)
    - "Add secret" をクリック
    
+   **シークレット3: Codecov Token (オプション)**
+   - "New repository secret" をクリック
+   - **Name**: `CODECOV_TOKEN`
+   - **Value**: CodecovのUpload Token
+   - "Add secret" をクリック
+   
    > **📝 GitHub Personal Access Tokenの取得方法:**
    > 1. GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
    > 2. "Generate new token" → "Generate new token (classic)"
    > 3. スコープで "repo" を選択
    > 4. 生成されたトークンをコピー
+   
+   > **📝 Codecov Tokenの取得方法:**
+   > 1. [Codecov](https://codecov.io/) にGitHubアカウントでログイン
+   > 2. リポジトリを追加・選択
+   > 3. Settings → Repository Upload Token をコピー
+   > 4. ※Codecovを使用しない場合はこのシークレットは不要です
 
 ## セットアップ完了後
 
