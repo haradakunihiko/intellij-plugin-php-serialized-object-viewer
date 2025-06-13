@@ -2,6 +2,9 @@
 
 A plugin that monitors clipboard and converts PHP serialized strings to JSON format for display.
 
+**Plugin Page**: https://plugins.jetbrains.com/plugin/27623-php-serialized-object-viewer
+
+
 ## Features
 
 - **Clipboard monitoring**: Monitor clipboard content every 1 second
