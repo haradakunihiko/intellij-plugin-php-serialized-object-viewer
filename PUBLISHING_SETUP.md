@@ -52,10 +52,25 @@
    - 左メニューから "Secrets and variables" → "Actions" をクリック
 
 3. **Repository secret の追加**
+   以下の2つのシークレットを追加してください：
+   
+   **シークレット1: JetBrains Marketplace Token**
    - "New repository secret" をクリック
    - **Name**: `INTELLIJ_PLATFORM_PUBLISHING_TOKEN`
-   - **Value**: Step 2で取得したPersonal Access Token
+   - **Value**: Step 1で取得したPersonal Access Token
    - "Add secret" をクリック
+   
+   **シークレット2: GitHub Personal Access Token**
+   - "New repository secret" をクリック
+   - **Name**: `PAT_TOKEN`
+   - **Value**: GitHubのPersonal Access Token (repo権限必要)
+   - "Add secret" をクリック
+   
+   > **📝 GitHub Personal Access Tokenの取得方法:**
+   > 1. GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
+   > 2. "Generate new token" → "Generate new token (classic)"
+   > 3. スコープで "repo" を選択
+   > 4. 生成されたトークンをコピー
 
 ## セットアップ完了後
 
