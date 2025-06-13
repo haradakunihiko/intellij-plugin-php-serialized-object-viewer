@@ -1,4 +1,4 @@
-# PHP Serialized Object viewer
+# PHP Serialized Object Viewer
 
 A plugin that monitors clipboard and converts PHP serialized strings to JSON format for display.
 
@@ -61,8 +61,8 @@ For detailed information about supported PHP serialization formats, see the conv
 ### Using Clipboard Monitoring Feature
 
 1. **Open tool window**:
-   - `View` → `Tool Windows` → `PHP Serialized Object viewer`
-   - Or click `PHP Serialized Object viewer` from the tool window bar on the right
+   - `View` → `Tool Windows` → `PHP Serialized Object Viewer`
+   - Or click `PHP Serialized Object Viewer` from the tool window bar on the right
 
 2. **Copy PHP serialized data**:
    - Copy PHP serialized data from DataGrip cells

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <idea-plugin>
     <id>io.github.haradakunihiko.intellij-plugin-php-serialized-object-viewer</id>
-    <name>PHP Serialized Object viewer</name>
+    <name>PHP Serialized Object Viewer</name>
     <vendor email="sthsoulful@gmail.com" url="http://github.com/haradakunihiko/intellij-plugin-php-serialized-object-viewer">haradakunihiko</vendor>
 
     <description><![CDATA[
