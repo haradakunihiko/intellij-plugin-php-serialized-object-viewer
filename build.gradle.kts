@@ -68,4 +68,17 @@ tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
     }
+
+    test {
+        finalizedBy(jacocoTestReport)
+    }
+
+    jacocoTestReport {
+        dependsOn(test)
+        reports {
+            xml.required = true
+            csv.required = false
+            html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
+        }
+    }
 }
