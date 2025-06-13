@@ -23,11 +23,10 @@ a:2:{s:4:"name";s:4:"John";s:3:"age";i:30;}
 }
 ```
 
-<div style="display: flex; gap: 10px;">
-  <img height="200px" alt="PHP Serialized Object Viewer Screenshot 1" src="docs/images/screenshot1.png" />
-  <img height="200px" alt="PHP Serialized Object Viewer Screenshot 2" src="docs/images/screenshot2.png" />
-  <img height="200px" alt="PHP Serialized Object Viewer Screenshot 2" src="docs/images/screenshot3.png" />
-</div>
+
+<img height="200px" alt="PHP Serialized Object Viewer Screenshot 1" src="docs/images/screenshot1.png" />
+<img height="200px" alt="PHP Serialized Object Viewer Screenshot 2" src="docs/images/screenshot2.png" />
+<img height="200px" alt="PHP Serialized Object Viewer Screenshot 2" src="docs/images/screenshot3.png" />
 
 ## Supported PHP Serialization Formats
 
