@@ -20,6 +20,10 @@ repositories {
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html
 dependencies {
     implementation("io.github.haradakunihiko:php-json-deserializer-kt:${property("phpJsonDeserializerVersion")}")
+    
+    // Test dependencies
+    testImplementation("junit:junit:4.13.2")
+    
     intellijPlatform {
         create("IC", property("intellijVersion").toString())
         testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
