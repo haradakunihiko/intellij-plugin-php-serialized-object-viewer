@@ -6,8 +6,8 @@ plugins {
     id("org.jetbrains.intellij.platform") version "2.5.0"
 }
 
-group = "io.github.haradakunihiko"
-version = "1.0-SNAPSHOT"
+group = property("projectGroup").toString()
+version = property("projectVersion").toString()
 
 repositories {
     mavenCentral()
@@ -19,9 +19,9 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html
 dependencies {
-    implementation("io.github.haradakunihiko:php-json-deserializer-kt:1.+")
+    implementation("io.github.haradakunihiko:php-json-deserializer-kt:${property("phpJsonDeserializerVersion")}")
     intellijPlatform {
-        create("IC", "2025.1")
+        create("IC", property("intellijVersion").toString())
         testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
 
         // Add necessary plugin dependencies for compilation here, example:
@@ -32,7 +32,8 @@ dependencies {
 intellijPlatform {
     pluginConfiguration {
         ideaVersion {
-            sinceBuild = "251"
+            sinceBuild = property("sinceBuild").toString()
+            untilBuild = property("untilBuild").toString()
         }
 
         changeNotes = """
@@ -44,8 +45,8 @@ intellijPlatform {
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
-        sourceCompatibility = "21"
-        targetCompatibility = "21"
+        sourceCompatibility = property("javaVersion").toString()
+        targetCompatibility = property("javaVersion").toString()
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         compilerOptions.jvmTarget.set(JvmTarget.JVM_21)

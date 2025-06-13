@@ -12,15 +12,14 @@ A plugin that monitors clipboard and converts PHP serialized strings to JSON for
 
 **PHP Serialized Data:**
 ```
-a:3:{s:4:"name";s:4:"John";s:3:"age";i:30;}
+a:2:{s:4:"name";s:4:"John";s:3:"age";i:30;}
 ```
 
 **Converted to JSON:**
 ```json
 {
-  "name": "John",
-  "age": 30,
-  "email": "john@example.com"
+    "name": "John",
+    "age": 30
 }
 ```
 
